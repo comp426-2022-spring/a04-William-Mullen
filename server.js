@@ -102,6 +102,14 @@ app.use( (req, res, next) => {
 
 // fs.writeFile(''.access.log')
 
+app.get('/app/log/access', (req, res) => {
+
+})
+
+app.get('/app/error', (app, res) => {
+
+})
+
 app.get('/app/', (req, res) => {
     // Respond with status 200
         res.statusCode = 200;
