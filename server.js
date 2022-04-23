@@ -11,6 +11,13 @@ const server = app.listen(port, () => {
     console.log('App is running on port %PORT%'.replace('%PORT%',port))
 })
 
+const logging = (req, res, next) => {
+    console.log(req.ip)
+    next()
+}
+
+app.use(logging)
+
 app.get('/app/', (req, res) => {
     // Respond with status 200
         res.statusCode = 200;
