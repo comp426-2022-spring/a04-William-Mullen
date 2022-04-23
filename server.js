@@ -1,6 +1,10 @@
 const express = require('express')
 const res = require('express/lib/response')
+
 const app = express()
+const morgan = require('morgan')
+const fs = require ('fs')
+
 var port = 5000
 const args = require('minimist')(process.argv.slice(2))
 
@@ -11,22 +15,13 @@ const server = app.listen(port, () => {
     console.log('App is running on port %PORT%'.replace('%PORT%',port))
 })
 
-const logging = (req, res, next) => {
-    res.statusCode = 200
-    console.log(req.ip+ '- -')
-    next()
-}
+// const logging = (req, res, next) => {
+//     res.statusCode = 200
+//     console.log(req.ip+ '- -')
+//     next()
+// }
 
-app.use(logging)
-
-app.get('/app/', (req, res) => {
-    // Respond with status 200
-        res.statusCode = 200;
-    // Respond with status message "OK"
-        res.statusMessage = 'OK';
-        res.writeHead( res.statusCode, { 'Content-Type' : 'text/plain' });
-        res.end(res.statusCode+ ' ' +res.statusMessage)
-    });
+// app.use(logging)
 
 function coinFlip() {
     let flip = Math.random();
@@ -71,6 +66,17 @@ function flipACoin(call) {
       dict["result"] = "lose"
     return dict
   }
+
+app.use(morgan('combined'))
+
+app.get('/app/', (req, res) => {
+    // Respond with status 200
+        res.statusCode = 200;
+    // Respond with status message "OK"
+        res.statusMessage = 'OK';
+        res.writeHead( res.statusCode, { 'Content-Type' : 'text/plain' });
+        res.end(res.statusCode+ ' ' +res.statusMessage)
+    });
 
 app.get('/app/flip', (req, res) => {
     var flip = coinFlip()
