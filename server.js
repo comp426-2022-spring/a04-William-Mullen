@@ -1,9 +1,9 @@
-const express = require('express')
-const res = require('express/lib/response')
-
-const app = express()
-const morgan = require('morgan')
 const fs = require ('fs')
+
+const express = require('express')
+const app = express()
+
+const morgan = require('morgan')
 
 var port = 5000
 const args = require('minimist')(process.argv.slice(2))
@@ -11,24 +11,39 @@ const args = require('minimist')(process.argv.slice(2))
 args["port"]
 var port = args.port || 5000 || process.env.PORT
 
+//help
+if (args.help || args.h) {
+    console.log(`
+    server.js [options]
+    
+    --port, -p	Set the port number for the server to listen on. Must be an integer between 1 and 65535.
+
+    --debug, -d If set to true, creates endlpoints /app/log/access/ which returns a JSON access log from 
+                the database and /app/error which throws  an error with the message "Error test successful." 
+                Defaults to false.
+
+    --log       If set to false, no log files are written. Defaults to true.
+                Logs are always written to database.
+
+    --help, -h	Return this message and exit.
+    `)
+    process.exit(0)
+}
+
+
+
 const server = app.listen(port, () => {
     console.log('App is running on port %PORT%'.replace('%PORT%',port))
 })
 
-// const logging = (req, res, next) => {
-//     res.statusCode = 200
-//     console.log(req.ip+ '- -')
-//     next()
-// }
-
-// app.use(logging)
+//flip functions
 
 function coinFlip() {
     let flip = Math.random();
     if (flip < 0.5)
       return "tails"
     return "heads"
-  }
+}
 
 function coinFlips(flips) {
     var results = [];
@@ -38,7 +53,7 @@ function coinFlips(flips) {
       i++;
     }
     return results
-  }
+}
 
 function countFlips(array) {
     var headsNum = 0;
@@ -53,7 +68,7 @@ function countFlips(array) {
     dict["heads"] = headsNum
     dict["tails"] = tailsNum
     return dict
-  }
+}
 
 function flipACoin(call) {
     let dict = new Object()
@@ -65,9 +80,11 @@ function flipACoin(call) {
     else 
       dict["result"] = "lose"
     return dict
-  }
+}
 
 app.use(morgan('combined'))
+
+// fs.writeFile(''.access.log')
 
 app.get('/app/', (req, res) => {
     // Respond with status 200
