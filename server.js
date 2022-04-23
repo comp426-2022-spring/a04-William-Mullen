@@ -12,7 +12,8 @@ const server = app.listen(port, () => {
 })
 
 const logging = (req, res, next) => {
-    console.log(req.ip)
+    res.statusCode = 200
+    console.log(req.ip+ '- -')
     next()
 }
 
