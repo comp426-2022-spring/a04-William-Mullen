@@ -101,14 +101,16 @@ app.use( (req, res, next) => {
 })
 
 // fs.writeFile(''.access.log')
+if (args.debug || args.d) {
+    
+    app.get('/app/log/access', (req, res) => {
 
-app.get('/app/log/access', (req, res) => {
+    })
 
-})
+    app.get('/app/error', (app, res) => {
 
-app.get('/app/error', (app, res) => {
-
-})
+    })
+}
 
 app.get('/app/', (req, res) => {
     // Respond with status 200
