@@ -100,9 +100,8 @@ app.use( (req, res, next) => {
     next()
 })
 
-// fs.writeFile(''.access.log')
 if (args.debug || args.d) {
-    
+
     app.get('/app/log/access', (req, res) => {
 
     })
