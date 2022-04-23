@@ -15,7 +15,7 @@ var port = args.port || 5000 || process.env.PORT
 if (args.help || args.h) {
     console.log(`
     server.js [options]
-    
+
     --port, -p	Set the port number for the server to listen on. Must be an integer between 1 and 65535.
 
     --debug, -d If set to true, creates endlpoints /app/log/access/ which returns a JSON access log from 
@@ -83,6 +83,22 @@ function flipACoin(call) {
 }
 
 app.use(morgan('combined'))
+
+app.use( (req, res, next) => {
+    let logdata = {
+        remoteaddr: req.ip,
+        remoteuser: req.user,
+        time: Date.now(),
+        method: req.method,
+        url: req.url,
+        protocol: req.protocol,
+        httpversion: req.httpVersion,
+        status: res.statusCode,
+        referer: req.headers['referer'],
+        useragent: req.headers['user-agent']
+    }
+    next()
+})
 
 // fs.writeFile(''.access.log')
 
