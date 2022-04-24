@@ -15,7 +15,7 @@ if (row == undefined) {
         url VARCHAR, protocol VARCHAR, httpversion NUMERIC, status INTEGER, referer VARCHAR, useragent VARCHAR);
     `;
 
-    dp.exec(sqlInit)
+    db.exec(sqlInit)
 
     console.log ('created database?')
 }
