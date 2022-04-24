@@ -105,7 +105,7 @@ app.use( (req, res, next) => {
     next()
 })
 
-//if (args.debug || args.d) {
+if (args.debug || args.d) {
 
     app.get('/app/log/access', (req, res) => {
         const stmt = db.prepare('SELECT * FROM accesslog WHERE id = ?').get(req.params.id)
@@ -115,7 +115,7 @@ app.use( (req, res, next) => {
     app.get('/app/error', (app, res) => {
         throw new Error('BROKEN')
     })
-//}
+}
 
 app.get('/app/', (req, res) => {
     // Respond with status 200
