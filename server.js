@@ -5,6 +5,7 @@ const express = require('express')
 const app = express()
 
 const morgan = require('morgan')
+const { debugPort } = require('process')
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -104,16 +105,17 @@ app.use( (req, res, next) => {
     next()
 })
 
-if (args.debug || args.d) {
+//if (args.debug || args.d) {
 
     app.get('/app/log/access', (req, res) => {
-
+        const stmt = db.prepare('SELECT * FROM accesslog WHERE id = ?').get(req.params.id)
+        res.status(200).json(stmt)
     })
 
     app.get('/app/error', (app, res) => {
-
+        throw new Error('BROKEN')
     })
-}
+//}
 
 app.get('/app/', (req, res) => {
     // Respond with status 200
@@ -145,6 +147,6 @@ app.get('/app/flip/call/tails', (req, res) => {
     });
 
 app.use(function(req, res) {
-    res.status(404).send("404 NOT COUND")
+    res.status(404).send("404 NOT FOUND")
     res.type("text/plain")
 })
