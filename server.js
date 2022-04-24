@@ -1,12 +1,13 @@
 const fs = require ('fs')
 const db = require("./database.js")
-app.use(express.urlencoded({extended: true}));
-app.use(express.json());
 
 const express = require('express')
 const app = express()
 
 const morgan = require('morgan')
+
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
 
 var port = 5000
 const args = require('minimist')(process.argv.slice(2))
