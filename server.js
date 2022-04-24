@@ -5,9 +5,6 @@ const express = require('express')
 const app = express()
 
 const morgan = require('morgan')
-const { debugPort } = require('process')
-const { url } = require('inspector')
-
 
 const args = require('minimist')(process.argv.slice(2))
 
@@ -85,7 +82,7 @@ function flipACoin(call) {
     return dict
 }
 
-if (args.log != false) {
+if (args.log == true) {
     const accessLog = fs.createWriteStream('access.log', { flags: 'a' })
     app.use(morgan('combined', { stream: accessLog }))
 }
@@ -114,7 +111,7 @@ app.use( (req, res, next) => {
 if (args.debug || args.d) {
 
     app.get('/app/log/access', (req, res) => {
-        const stmt = db.prepare('SELECT * FROM accesslog')
+        const stmt = db.prepare('SELECT * FROM accesslog').all()
         res.status(200).json(stmt)
     })
 
