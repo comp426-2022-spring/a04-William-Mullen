@@ -11,8 +11,8 @@ if (row == undefined) {
     console.log('Log database appears to be empty. Creating log database...')
 
     const sqlInit = `
-    CREATE TABLE accesslog ( id INTERGER PRIMARY KEY, remote-addr VARCHAR, remote-user VARCHAR, datetime VARCHAR, 
-        url VARCHAR, http-version NUMERIC, status INTEGER, content-lenght NUMERIC)
+    CREATE TABLE accesslog ( id INTERGER PRIMARY KEY, remote-addr VARCHAR, remote-user VARCHAR, datetime VARCHAR, method VARCHAR 
+        url VARCHAR, protocol VARCHAR, http-version NUMERIC, status INTEGER, referer VARCHAR, user-agent VARCHAR)
     `
 
     logdp.exec(sqlInit)
