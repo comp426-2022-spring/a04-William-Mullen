@@ -6,6 +6,7 @@ const app = express()
 
 const morgan = require('morgan')
 const { debugPort } = require('process')
+const { url } = require('inspector')
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -102,13 +103,15 @@ app.use( (req, res, next) => {
         referer: req.headers['referer'],
         useragent: req.headers['user-agent']
     }
+    const stmt = db.prepare('INSERT INTO accesslog remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referer, useragent')
+    const info = stmt.run(logdata.remoteaddr, logdata.remoteuser, logdata.time, logdata.method, logdata.method, logdata.url, logdata.protocol, logdata.httpversion, logdata.status, logdata.referer, logdata.useragent)
     next()
 })
 
 if (args.debug || args.d) {
 
     app.get('/app/log/access', (req, res) => {
-        const stmt = db.prepare('SELECT * FROM accesslog WHERE id = ?').get(req.params.id)
+        const stmt = db.prepare('SELECT * FROM accesslog')
         res.status(200).json(stmt)
     })
 
