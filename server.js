@@ -8,14 +8,11 @@ const morgan = require('morgan')
 const { debugPort } = require('process')
 const { url } = require('inspector')
 
-app.use(express.urlencoded({extended: true}));
-app.use(express.json());
 
-var port = 5000
 const args = require('minimist')(process.argv.slice(2))
 
 args["port"]
-var port = args.port || 5000 || process.env.PORT
+var port = args.port || 5555
 
 //help
 if (args.help || args.h) {
@@ -93,6 +90,9 @@ if (args.log != false) {
     app.use(morgan('combined', { stream: accessLog }))
 }
 
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+
 app.use( (req, res, next) => {
     let logdata = {
         remoteaddr: req.ip,
@@ -106,8 +106,8 @@ app.use( (req, res, next) => {
         referer: req.headers['referer'],
         useragent: req.headers['user-agent']
     }
-    const stmt = db.prepare('INSERT INTO accesslog remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referer, useragent')
-    const info = stmt.run(logdata.remoteaddr, logdata.remoteuser, logdata.time, logdata.method, logdata.method, logdata.url, logdata.protocol, logdata.httpversion, logdata.status, logdata.referer, logdata.useragent)
+    const stmt = db.prepare('INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referer, useragent) VALUES (?,?,?,?,?,?,?,?,?,?)')
+    const info = stmt.run(logdata.remoteaddr, logdata.remoteuser, logdata.time, logdata.method, logdata.url, logdata.protocol, logdata.httpversion, logdata.status, logdata.referer, logdata.useragent)
     next()
 })
 
